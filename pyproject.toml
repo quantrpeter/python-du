@@ -9,5 +9,8 @@ description = "A disk usage analyzer that prints a visual map of folder sizes"
 readme = "README.md"
 requires-python = ">=3.9"
 
+[tool.setuptools.packages.find]
+include = ["python_du*"]
+
 [project.scripts]
 python-du = "python_du.cli:main"
