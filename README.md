@@ -4,7 +4,7 @@ A disk usage analyzer that scans a directory and prints a visual tree map of fol
 
 ## Example
 
-![](Screenshot from 2026-03-06 11-31-47.png)
+![](https://github.com/quantrpeter/python-du/blob/main/image/Screenshot%20from%202026-03-06%2011-31-47.png?raw=true)
 
 ## Installation
 
