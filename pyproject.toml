@@ -1,0 +1,13 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "python-du"
+version = "0.1.0"
+description = "A disk usage analyzer that prints a visual map of folder sizes"
+readme = "README.md"
+requires-python = ">=3.9"
+
+[project.scripts]
+python-du = "python_du.cli:main"
