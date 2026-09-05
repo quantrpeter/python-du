@@ -21,6 +21,11 @@ class DirNode:
         return self.path.name or str(self.path)
 
 
+def _allocated_size(stat_result: os.stat_result) -> int:
+    blocks = getattr(stat_result, "st_blocks", None)
+    return stat_result.st_size if blocks is None else blocks * 512
+
+
 def scan(root: Path, *, max_depth: int | None = None, follow_symlinks: bool = False) -> DirNode:
     """Walk *root* and return a tree of DirNode objects with computed sizes."""
     return _scan_dir(root.resolve(), depth=0, max_depth=max_depth, follow_symlinks=follow_symlinks)
@@ -51,7 +56,8 @@ def _scan_dir(
 
             if entry.is_file(follow_symlinks=follow_symlinks):
                 try:
-                    node.own_size += entry.stat(follow_symlinks=follow_symlinks).st_size
+                    stat_result = entry.stat(follow_symlinks=follow_symlinks)
+                    node.own_size += _allocated_size(stat_result)
                     node.file_count += 1
                 except OSError:
                     pass
@@ -83,7 +89,8 @@ def _shallow_size(path: Path) -> DirNode:
         for dirpath, _dirnames, filenames in os.walk(path):
             for fname in filenames:
                 try:
-                    total += os.path.getsize(os.path.join(dirpath, fname))
+                    stat_result = os.stat(os.path.join(dirpath, fname))
+                    total += _allocated_size(stat_result)
                     fcount += 1
                 except OSError:
                     pass
